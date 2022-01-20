@@ -1,0 +1,24 @@
+{
+  "name": "bank-kata",
+  "version": "1.0.0",
+  "description": "http://codingdojo.org/kata/BankOCR/",
+  "main": "index.ts",
+  "repository": "https://github.com/laaksomavrick/bank-ocr",
+  "author": "mavrick laakso",
+  "license": "MIT",
+  "engines": {
+    "node": "16"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "rm -rf ./build && tsc",
+    "format": "prettier --write '*/**/*.{ts,tsx}'",
+    "package": "pkg build/index.js --out-path out"
+  },
+  "devDependencies": {
+    "pkg": "^5.5.2",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  }
+}
