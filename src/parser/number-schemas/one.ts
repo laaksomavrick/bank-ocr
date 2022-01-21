@@ -1,4 +1,10 @@
-const INPUT_ONE_ASCII = ['   ', '  |', '  |', '   '].join('');
+// prettier-ignore
+const INPUT_ONE_ASCII = [
+  '   ',
+  '  |',
+  '  |',
+  '   '
+].join('');
 
 const INPUT_ONE_HEX = Buffer.from(INPUT_ONE_ASCII, 'utf8');
 

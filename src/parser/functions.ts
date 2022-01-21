@@ -17,15 +17,14 @@ const DIGIT_LINE_LENGTH = 3;
 const ACCOUNT_NUMBER_LENGTH = LINE_LENGTH * 4;
 
 /**
- * 
+ *
  * @param file The account number file
  * @returns {Array<AccountNumberData>} A parsed array of account numbers
  */
 export const parseAccountNumbersFrom = (file: Buffer): AccountNumberData[] => {
     let agg = [];
 
-    for (let i = 0; i < file.byteLength; i += ACCOUNT_NUMBER_LENGTH)
-    {
+    for (let i = 0; i < file.byteLength; i += ACCOUNT_NUMBER_LENGTH) {
         const chunk = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
         const digits = parseAccountNumber(chunk);
         const data = { digits };
@@ -34,7 +33,7 @@ export const parseAccountNumbersFrom = (file: Buffer): AccountNumberData[] => {
     }
 
     return agg;
-}
+};
 
 /**
  * Validate an account number file. Does not confirm the soundness of the file.
