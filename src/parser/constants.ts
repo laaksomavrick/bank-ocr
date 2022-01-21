@@ -1,4 +1,4 @@
-import { INPUT_ONE } from "./one";
+import { INPUT_ONE } from "./number-schemas/one";
 
 export const WHITESPACE = 0x20
 export const NEWLINE = 0x0a
