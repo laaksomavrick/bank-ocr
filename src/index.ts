@@ -1,6 +1,6 @@
-import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { parseAccountNumbersFrom, validateFile } from './parser';
+import { readAccountsFile } from './io/functions';
+import { parseAccountNumbersFrom } from './parser';
 
 const main = async () => {
     const args = process.argv;
@@ -12,17 +12,9 @@ const main = async () => {
     }
 
     const [accountsFilePath] = process.argv.slice(2);
-
     const filepath = join(__dirname, '..', accountsFilePath);
-    const file = await readFile(filepath);
 
-    const isFileValid = validateFile(file);
-
-    if (isFileValid === false) {
-        throw new Error(
-            'Invalid input provided - inputs must be compromised of whitespace, newlines, pipes, or underscores.',
-        );
-    }
+    const file = await readAccountsFile(filepath);
 
     const accountNumbers = parseAccountNumbersFrom(file);
 

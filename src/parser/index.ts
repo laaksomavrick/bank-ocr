@@ -1,1 +1,1 @@
-export * from './functions';
+export { parseAccountNumbersFrom, validateFile } from './functions';
