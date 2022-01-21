@@ -1,3 +1,4 @@
+import { AccountNumberData } from '../common';
 import { INPUTS, VALID_BYTE_CHARACTERS } from './constants';
 
 /**
@@ -11,11 +12,44 @@ const LINE_LENGTH = 28;
 const DIGIT_LINE_LENGTH = 3;
 
 /**
+ *  The number of bytes for each account number entry in a given input file
+ */
+const ACCOUNT_NUMBER_LENGTH = LINE_LENGTH * 4;
+
+/**
+ * 
+ * @param file The account number file
+ * @returns {Array<AccountNumberData>} A parsed array of account numbers
+ */
+export const parseAccountNumbersFrom = (file: Buffer): AccountNumberData[] => {
+    let agg = [];
+
+    for (let i = 0; i < file.byteLength; i += ACCOUNT_NUMBER_LENGTH)
+    {
+        const chunk = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
+        const digits = parseAccountNumber(chunk);
+        const data = { digits };
+
+        agg.push(data);
+    }
+
+    return agg;
+}
+
+/**
+ * Validate an account number file. Does not confirm the soundness of the file.
+ * @param file The input account number file
+ * @returns {boolean} Whether the file is valid or not
+ */
+export const validateFile = (file: Buffer) =>
+    file.every((byte) => VALID_BYTE_CHARACTERS.includes(byte));
+
+/**
  * Parses an account number from a given Buffer.
  * @param accountNumberBytes An account number entry
  * @returns {(Array<number | null>)} An array representation of each digit of the account number. Null indicates a value which cannot be parsed (i.e., is invalid)
  */
-export const parseAccountNumber = (
+const parseAccountNumber = (
     accountNumberBytes: Buffer,
 ): Array<number | null> => {
     let agg = [];
@@ -88,7 +122,7 @@ export const parseAccountNumber = (
  * @param chunk An account number digit byte array, i.e. the "3x4" grid of characters representing a digit.
  * @returns  {number | null} Either the number representation of the chunk or null if it does not match a number schema.
  */
-export const parseAccountNumberDigit = (chunk: Buffer): number | null => {
+const parseAccountNumberDigit = (chunk: Buffer): number | null => {
     for (const input of INPUTS) {
         const match = chunk.equals(input.hex);
 
@@ -99,11 +133,3 @@ export const parseAccountNumberDigit = (chunk: Buffer): number | null => {
 
     return null;
 };
-
-/**
- * Validate an account number file. Does not confirm the soundness of the file.
- * @param file The input account number file
- * @returns {boolean} Whether the file is valid or not
- */
-export const validateFile = (file: Buffer) =>
-    file.every((byte) => VALID_BYTE_CHARACTERS.includes(byte));

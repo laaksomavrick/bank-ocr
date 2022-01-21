@@ -1,6 +1,6 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { parseAccountNumber, validateFile } from './parser';
+import { parseAccountNumbersFrom, validateFile } from './parser';
 
 const main = async () => {
     const args = process.argv;
@@ -24,9 +24,9 @@ const main = async () => {
         );
     }
 
-    const accountNumber = parseAccountNumber(file);
+    const accountNumbers = parseAccountNumbersFrom(file);
 
-    console.log(accountNumber);
+    console.log(accountNumbers);
 };
 
 try {
