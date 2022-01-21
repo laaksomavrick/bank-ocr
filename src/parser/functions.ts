@@ -83,6 +83,11 @@ export const parseAccountNumber = (
     return agg;
 };
 
+/**
+ * Parse an account number digit byte array representation.
+ * @param chunk An account number digit byte array, i.e. the "3x4" grid of characters representing a digit.
+ * @returns  {number | null} Either the number representation of the chunk or null if it does not match a number schema.
+ */
 export const parseAccountNumberDigit = (chunk: Buffer): number | null => {
     for (const input of INPUTS) {
         const match = chunk.equals(input.hex);
@@ -95,5 +100,10 @@ export const parseAccountNumberDigit = (chunk: Buffer): number | null => {
     return null;
 };
 
+/**
+ * Validate an account number file. Does not confirm the soundness of the file.
+ * @param file The input account number file
+ * @returns {boolean} Whether the file is valid or not
+ */
 export const validateFile = (file: Buffer) =>
     file.every((byte) => VALID_BYTE_CHARACTERS.includes(byte));
