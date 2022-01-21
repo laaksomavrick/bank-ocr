@@ -1,19 +1,49 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { INPUTS } from './ascii';
+import { INPUTS, VALID_BYTE_CHARACTERS } from './parser';
+
+/**
+ * 27 characters + a newline character
+ */
+const LINE_LENGTH = 28;
+const DIGIT_LENGTH = 3;
 
 const parseAccountNumber = (file: Buffer): Array<number | null> => {
+
+    // Acc numbers are 4 lines each
+    // Acc numbers are 27 characters in length 
+    // Acc numbers have 9 digits
+
     let agg = [];
 
-    for (let i = 0; i < file.byteLength; i += 16)
-    {
-        const chunkStart = i;
-        const chunkEnd = i + (16 - 1);
+    // First number
+    // 0..3 (0, 1, 2, 3)
+    // 26..29 (26, 27, 28, 29)
+    // 52..55 (52, 53, 54, 55)
+    // 78..81 (78, 79, 80, 81)
 
-        const chunk = file.slice(chunkStart, chunkEnd); 
+    // Second number
+    // 4..7 (4, 5, 6, 7)
+
+
+    for (let i = 0; i < LINE_LENGTH - 1; i += DIGIT_LENGTH) {
+        const firstLineByteIndex = i;
+        const secondLineByteIndex = i + LINE_LENGTH;
+        const thirdLineByteIndex = i + (LINE_LENGTH * 2);
+        const fourthLineByteIndex = i + (LINE_LENGTH * 3);
+
+        const firstLineChunk = file.slice(firstLineByteIndex, firstLineByteIndex + DIGIT_LENGTH)
+        const secondLineChunk = file.slice(secondLineByteIndex, secondLineByteIndex + DIGIT_LENGTH)
+        const thirdLineChunk = file.slice(thirdLineByteIndex, thirdLineByteIndex + DIGIT_LENGTH)
+        const fourthLineChunk = file.slice(fourthLineByteIndex, fourthLineByteIndex + DIGIT_LENGTH)
+
+        const chunks = [firstLineChunk, secondLineChunk, thirdLineChunk, fourthLineChunk];
+        const chunk = Buffer.concat(chunks);
+
         const match = parseAccountNumberDigit(chunk);
 
         agg.push(match);
+
     }
 
     return agg;
@@ -34,14 +64,24 @@ const parseAccountNumberDigit = (chunk: Buffer): number | null => {
 
 const main = async () => {
 
-    const filepath = join(__dirname, '..', 'sample', '1');
+    const args = process.argv;
+
+    if (args.length !== 3)
+    {
+        throw new Error("Error parsing arguments. Please specify only one path to a file, e.g. ./bankOcr accountNumbers.txt")
+    }
+
+    const [accountsFile] = process.argv.slice(2);
+
+    const filepath = join(__dirname, '..', accountsFile);
     const file = await readFile(filepath);
 
-    // TODO: defensive input (4 lines, 27 characters in each line)
+    const isFileValid = file.every(byte => VALID_BYTE_CHARACTERS.includes(byte));
 
-    // iterate over file 16 bytes at a time
-    // if match, num
-    // if no match, discard for now
+    if (isFileValid === false)
+    {
+        throw new Error("Invalid input provided - inputs must be compromised of whitespace, newlines, pipes, or underscores.")
+    }
 
     const accountNumber = parseAccountNumber(file);
 
@@ -51,7 +91,6 @@ const main = async () => {
 
 try {
     main();
-} catch (e)
-{
+} catch (e) {
     console.error(e);
 }
