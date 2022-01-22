@@ -1,6 +1,11 @@
 import { AccountNumberData } from '../common';
 import { ValidationState } from '../validation';
 
+/**
+ * Formats a given list of account numbers
+ * @param accountNumbers A list of account numbers
+ * @returns {AccountNumberData[]} A list of account numbers with formatting added
+ */
 export const formatAccountNumbers = (
     accountNumbers: AccountNumberData[],
 ): AccountNumberData[] => {
@@ -10,6 +15,11 @@ export const formatAccountNumbers = (
     }));
 };
 
+/**
+ * Formats a given account number data entry to be human readable
+ * @param accountNumber An account number
+ * @returns {string} A human readable account number + validation state
+ */
 export const getHumanReadableString = (
     accountNumber: AccountNumberData,
 ): string => {

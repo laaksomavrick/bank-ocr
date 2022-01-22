@@ -5,7 +5,13 @@ import { parseAccountNumbersFrom, validateFile } from './functions';
 describe('Parser', () => {
     describe('validateFile', () => {
         it('validates an account number file', async () => {
-            const filepath = join(__dirname, '..', '..', 'sample', '111111111');
+            const filepath = join(
+                __dirname,
+                '..',
+                '..',
+                'sample',
+                'use_case_1',
+            );
             const accountNumberFileBuffer = await readAccountsFile(filepath);
 
             const isValid = validateFile(accountNumberFileBuffer);
@@ -29,7 +35,7 @@ describe('Parser', () => {
                 '..',
                 '..',
                 'sample',
-                '123456789_123456780',
+                'use_case_2',
             );
             const accountNumberFileBuffer = await readAccountsFile(filepath);
 
