@@ -9,9 +9,9 @@ import { ValidationState } from './enums';
 export const validateAccountNumbers = (
     accountNumberData: AccountNumberData[],
 ): AccountNumberData[] => {
-    return accountNumberData.map(({ digits }) => ({
-        digits,
-        validationState: getValidationState(digits),
+    return accountNumberData.map((x) => ({
+        ...x,
+        validationState: getValidationState(x.digits),
     }));
 };
 
@@ -56,7 +56,7 @@ export const getValidationState = (
  * @param accountNumber The account number to validate the checksum
  * @returns {boolean} Whether the checksum is valid or not
  */
-const isValidChecksum = (accountNumber: Array<number>): boolean => {
+export const isValidChecksum = (accountNumber: Array<number>): boolean => {
     let agg = 0;
 
     for (
