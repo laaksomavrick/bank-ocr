@@ -1,28 +1,33 @@
 import { join } from 'path';
 import { readAccountsFile } from './io/functions';
 import { parseAccountNumbersFrom } from './parser';
+import { isError } from './util';
 
 const main = async () => {
-    const args = process.argv;
+    try {
+        const args = process.argv;
 
-    if (args.length !== 3) {
-        throw new Error(
-            'Error parsing arguments. Please specify only one path to a file, e.g. ./bankOcr accountNumbers.txt',
-        );
+        if (args.length !== 3) {
+            throw new Error(
+                'Error parsing arguments. Please specify only one path to a file, e.g. ./bankOcr accountNumbers.txt',
+            );
+        }
+
+        const [accountsFilePath] = process.argv.slice(2);
+        const filepath = join(accountsFilePath);
+
+        const file = await readAccountsFile(filepath);
+
+        const accountNumbers = parseAccountNumbersFrom(file);
+
+        console.log(accountNumbers);
+    } catch (e) {
+        if (isError(e)) {
+            console.error(e.message);
+        } else {
+            console.error('Oops! Something went wrong.');
+        }
     }
-
-    const [accountsFilePath] = process.argv.slice(2);
-    const filepath = join(__dirname, '..', accountsFilePath);
-
-    const file = await readAccountsFile(filepath);
-
-    const accountNumbers = parseAccountNumbersFrom(file);
-
-    console.log(accountNumbers);
 };
 
-try {
-    main();
-} catch (e) {
-    console.error(e);
-}
+main();
