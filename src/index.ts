@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { formatAccountNumbers } from './formatting';
 import { readAccountsFile } from './io';
 import { parseAccountNumbersFrom } from './parser';
 import { isError } from './util';
@@ -21,6 +22,7 @@ const main = async () => {
 
         let accountNumbers = parseAccountNumbersFrom(file);
         accountNumbers = validateAccountNumbers(accountNumbers);
+        accountNumbers = formatAccountNumbers(accountNumbers);
 
         console.log(accountNumbers);
     } catch (e) {
