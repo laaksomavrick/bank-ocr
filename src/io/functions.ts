@@ -18,4 +18,4 @@ export const readAccountsFile = async (path: string): Promise<Buffer> => {
     }
 
     return file;
-}
+};
