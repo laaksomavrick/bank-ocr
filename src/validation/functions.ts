@@ -1,6 +1,11 @@
 import { AccountNumberData } from '../common';
 import { ValidationState } from './enums';
 
+/**
+ * Validates a list of account numbers
+ * @param accountNumberData The account numbers
+ * @returns {AccountNumberData[]} The account numbers with validation metadata
+ */
 export const validateAccountNumbers = (
     accountNumberData: AccountNumberData[],
 ): AccountNumberData[] => {
