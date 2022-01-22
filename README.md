@@ -10,6 +10,10 @@ todo
 
 todo
 
+## How do I distribute this?
+
+todo
+
 ## Who should I contact for help?
 
 todo
