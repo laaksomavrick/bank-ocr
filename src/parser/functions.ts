@@ -1,5 +1,4 @@
 import { AccountNumberData } from '../common';
-import { getValidationState } from '../validation';
 import { INPUTS, VALID_BYTE_CHARACTERS } from './constants';
 
 /**
@@ -28,8 +27,7 @@ export const parseAccountNumbersFrom = (file: Buffer): AccountNumberData[] => {
     for (let i = 0; i < file.byteLength; i += ACCOUNT_NUMBER_LENGTH) {
         const chunk = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
         const digits = parseAccountNumber(chunk);
-        const validationState = getValidationState(digits);
-        const data = { digits, validationState };
+        const data = { digits };
 
         agg.push(data);
     }

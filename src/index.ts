@@ -2,6 +2,7 @@ import { join } from 'path';
 import { readAccountsFile } from './io';
 import { parseAccountNumbersFrom } from './parser';
 import { isError } from './util';
+import { validateAccountNumbers } from './validation';
 
 const main = async () => {
     try {
@@ -18,7 +19,8 @@ const main = async () => {
 
         const file = await readAccountsFile(filepath);
 
-        const accountNumbers = parseAccountNumbersFrom(file);
+        let accountNumbers = parseAccountNumbersFrom(file);
+        accountNumbers = validateAccountNumbers(accountNumbers);
 
         console.log(accountNumbers);
     } catch (e) {

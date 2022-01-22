@@ -1,4 +1,14 @@
+import { AccountNumberData } from '../common';
 import { ValidationState } from './enums';
+
+export const validateAccountNumbers = (
+    accountNumberData: AccountNumberData[],
+): AccountNumberData[] => {
+    return accountNumberData.map(({ digits }) => ({
+        digits,
+        validationState: getValidationState(digits),
+    }));
+};
 
 /**
  * Gets the validation state for a given account number

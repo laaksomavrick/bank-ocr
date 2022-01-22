@@ -1,2 +1,2 @@
-export { getValidationState } from './functions';
+export { validateAccountNumbers } from './functions';
 export { ValidationState } from './enums';
