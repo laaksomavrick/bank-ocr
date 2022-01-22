@@ -72,5 +72,11 @@ describe('Formatting', () => {
 
             expect(formatted).toBe('?000000?? ILL');
         });
+
+        it('throws when provided an account number without a validation state', () => {
+            const accountNumber = { digits: [] };
+
+            expect(() => getHumanReadableString(accountNumber)).toThrowError();
+        });
     });
 });
