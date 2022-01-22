@@ -73,6 +73,17 @@ describe('Formatting', () => {
             expect(formatted).toBe('?000000?? ILL');
         });
 
+        it('formats an AMB account number', () => {
+            const accountNumber = {
+                digits: [8, 8, 8, 8, 8, 8, 8, 8, 8],
+                validationState: ValidationState.AMBIGUOUS,
+            };
+
+            const formatted = getHumanReadableString(accountNumber);
+
+            expect(formatted).toBe('888888888 AMB');
+        });
+
         it('throws when provided an account number without a validation state', () => {
             const accountNumber = { digits: [] };
 

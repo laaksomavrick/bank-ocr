@@ -1,8 +1,7 @@
-import { join } from 'path';
 import { formatAccountNumbers } from './formatting';
-import { readAccountsFile } from './io';
-import { writeAccountNumberDataToFile } from './io/functions';
+import { readAccountsFile, writeAccountNumberDataToFile } from './io';
 import { parseAccountNumbersFrom } from './parser';
+import { reconcileAccountNumbers } from './reconciler';
 import { isError } from './util';
 import { validateAccountNumbers } from './validation';
 
@@ -23,9 +22,14 @@ const main = async () => {
 
         let accountNumbers = parseAccountNumbersFrom(file);
         accountNumbers = validateAccountNumbers(accountNumbers);
+        accountNumbers = reconcileAccountNumbers(accountNumbers);
         accountNumbers = formatAccountNumbers(accountNumbers);
 
         await writeAccountNumberDataToFile(accountNumbers, writePath);
+
+        console.log(
+            `Completed import of ${readPath}, results written to ${writePath}`,
+        );
     } catch (e) {
         if (isError(e)) {
             console.error(e.message);

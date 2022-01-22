@@ -25,9 +25,9 @@ export const parseAccountNumbersFrom = (file: Buffer): AccountNumberData[] => {
     let agg = [];
 
     for (let i = 0; i < file.byteLength; i += ACCOUNT_NUMBER_LENGTH) {
-        const chunk = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
-        const digits = parseAccountNumber(chunk);
-        const data = { digits };
+        const buffer = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
+        const digits = parseAccountNumber(buffer);
+        const data = { digits, buffer };
 
         agg.push(data);
     }

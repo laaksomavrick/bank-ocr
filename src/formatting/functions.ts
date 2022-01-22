@@ -37,6 +37,8 @@ export const getHumanReadableString = (
             return digits.join('');
         case ValidationState.ERROR:
             return `${digits.join('')} ERR`;
+        case ValidationState.AMBIGUOUS:
+            return `${digits.join('')} AMB`;
         case ValidationState.ILLEGIBLE:
             return `${digits.map((x) => (x != null ? x : '?')).join('')} ILL`;
         default:

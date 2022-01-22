@@ -1,1 +1,1 @@
-export { readAccountsFile } from './functions';
+export { readAccountsFile, writeAccountNumberDataToFile } from './functions';
