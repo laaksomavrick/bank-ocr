@@ -18,7 +18,7 @@ const DIGIT_LINE_LENGTH = 3;
 const ACCOUNT_NUMBER_LENGTH = LINE_LENGTH * 4;
 
 /**
- *
+ * Parses account numbers from a given input file
  * @param file The account number file
  * @returns {Array<AccountNumberData>} A parsed array of account numbers
  */

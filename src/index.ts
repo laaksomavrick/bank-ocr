@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readAccountsFile } from './io/functions';
+import { readAccountsFile } from './io';
 import { parseAccountNumbersFrom } from './parser';
 import { isError } from './util';
 

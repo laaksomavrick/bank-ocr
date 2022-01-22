@@ -1,7 +1,10 @@
 import { ValidationState } from './enums';
 
-// todo comments
-
+/**
+ * Gets the validation state for a given account number
+ * @param accountNumber The account number to assert a validation state against
+ * @returns {ValidationState} The validation state for the given account number
+ */
 export const getValidationState = (
     accountNumber: Array<number | null>,
 ): ValidationState => {
@@ -11,7 +14,6 @@ export const getValidationState = (
         );
     }
 
-    // TODO: type guard + isValidChecksum Array<number>
     const isIllegible =
         accountNumber.find((digit) => digit === null) !== undefined;
 
@@ -29,15 +31,17 @@ export const getValidationState = (
     return ValidationState.OK;
 };
 
+/**
+ * Validates a checksum against an account number given the following formula:
+ *
+ * account number:  3  4  5  8  8  2  8  6  5
+ * position names:  d9 d8 d7 d6 d5 d4 d3 d2 d1
+ * checksum calculation:
+ * (d1+2*d2+3*d3+...+9*d9) mod 11 = 0
+ * @param accountNumber The account number to validate the checksum
+ * @returns {boolean} Whether the checksum is valid or not
+ */
 const isValidChecksum = (accountNumber: Array<number>): boolean => {
-    /**
-     *  account number:  3  4  5  8  8  2  8  6  5
-        position names:  d9 d8 d7 d6 d5 d4 d3 d2 d1
-
-        checksum calculation:
-        (d1+2*d2+3*d3+...+9*d9) mod 11 = 0
-     */
-
     let agg = 0;
 
     for (
