@@ -1,0 +1,1 @@
+export { formatAccountNumbers } from './functions';
