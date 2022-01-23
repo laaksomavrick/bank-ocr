@@ -84,10 +84,11 @@ export const reconcileAccountNumber = (
 };
 
 /**
- *
- * @param accountNumber
- * @param replacementByte
- * @returns
+ * Iterate over a byte representation of an account number, testing a replacementbyte such that
+ * we may find a valid permutation of an account number.
+ * @param accountNumber The account number
+ * @param replacementByte The replacement byte to attempt (e.g. PIPE or UNDERSCORE or WHITESPACE)
+ * @returns {Array<number>} A list of possible valid account numbers
  */
 const getAccountNumberPossibiltiesFor = (
     accountNumber: Buffer,
