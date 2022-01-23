@@ -1,1 +1,5 @@
-export { parseAccountNumbersFrom, validateFile } from './functions';
+export {
+    parseAccountNumbersFrom,
+    validateFile,
+    parseAccountNumber,
+} from './functions';

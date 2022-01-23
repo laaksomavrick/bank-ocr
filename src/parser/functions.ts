@@ -25,9 +25,9 @@ export const parseAccountNumbersFrom = (file: Buffer): AccountNumberData[] => {
     let agg = [];
 
     for (let i = 0; i < file.byteLength; i += ACCOUNT_NUMBER_LENGTH) {
-        const chunk = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
-        const digits = parseAccountNumber(chunk);
-        const data = { digits };
+        const buffer = file.slice(i, i + ACCOUNT_NUMBER_LENGTH);
+        const digits = parseAccountNumber(buffer);
+        const data = { digits, buffer };
 
         agg.push(data);
     }
@@ -48,7 +48,7 @@ export const validateFile = (file: Buffer) =>
  * @param accountNumberBytes An account number entry
  * @returns {(Array<number | null>)} An array representation of each digit of the account number. Null indicates a value which cannot be parsed (i.e., is invalid)
  */
-const parseAccountNumber = (
+export const parseAccountNumber = (
     accountNumberBytes: Buffer,
 ): Array<number | null> => {
     let agg = [];

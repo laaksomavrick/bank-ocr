@@ -1,2 +1,2 @@
-export { validateAccountNumbers } from './functions';
+export { validateAccountNumbers, isValidChecksum } from './functions';
 export { ValidationState } from './enums';
