@@ -14,11 +14,17 @@ import { AmbiguousAccountNumberData } from './interfaces';
 export const reconcileAccountNumbers = (
     accountNumbers: AccountNumberData[],
 ): AccountNumberData[] => {
+    console.log(accountNumbers);
     const toReconcile = accountNumbers.filter(
         ({ validationState }) =>
             validationState === ValidationState.ERROR ||
             validationState === ValidationState.ILLEGIBLE,
     );
+
+    const isOk = accountNumbers.filter(
+        ({ validationState }) => validationState === ValidationState.OK,
+    );
+
     const reconciled = toReconcile
         .map(reconcileAccountNumber)
         .map(({ digits, validationState, humanReadableString }) => ({
@@ -27,7 +33,13 @@ export const reconcileAccountNumbers = (
             humanReadableString,
         }));
 
-    return reconciled;
+    const ok = isOk.map(({ digits, validationState, humanReadableString }) => ({
+        digits,
+        validationState,
+        humanReadableString,
+    }));
+
+    return [...ok, ...reconciled];
 };
 
 export const reconcileAccountNumber = (
