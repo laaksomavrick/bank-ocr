@@ -4,10 +4,6 @@ import { reconcileAccountNumber } from './functions';
 import { readAccountsFile } from '../io';
 
 describe('Reconciler', () => {
-    describe('reconcileAccountNumbers', () => {
-        it.todo('reconciles account numbers');
-    });
-
     describe('reconcileAccountNumber', () => {
         it('throws when no buffer exists for an account number', () => {
             const accountNumber = {
@@ -73,7 +69,33 @@ describe('Reconciler', () => {
             expect(reconciled.validationState).toEqual(ValidationState.OK);
         });
 
-        it.todo('can reconcile an ambiguous account number with an ERR state');
-        it.todo('can reconcile an ambiguous account number with an ILL state');
+        it('can reconcile an ambiguous account number with an ERR state', async () => {
+            const filepath = join(
+                __dirname,
+                '..',
+                '..',
+                'sample',
+                'use_case_4',
+                'ambiguous_err',
+            );
+            const buffer = await readAccountsFile(filepath);
+
+            const accountNumber = {
+                buffer,
+                digits: [8, 8, 8, 8, 8, 8, 8, 8, 8],
+                validationState: ValidationState.ERROR,
+            };
+
+            const reconciled = reconcileAccountNumber(accountNumber);
+            const [firstPos, secondPos, thirdPos] = reconciled.possibilities;
+
+            expect(reconciled.digits).toEqual([8, 8, 8, 8, 8, 8, 8, 8, 8]);
+            expect(reconciled.validationState).toEqual(
+                ValidationState.AMBIGUOUS,
+            );
+            expect(firstPos).toEqual([8, 8, 8, 8, 8, 6, 8, 8, 8]);
+            expect(secondPos).toEqual([8, 8, 8, 8, 8, 8, 8, 8, 0]);
+            expect(thirdPos).toEqual([8, 8, 8, 8, 8, 8, 9, 8, 8]);
+        });
     });
 });

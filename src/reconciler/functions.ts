@@ -1,12 +1,10 @@
 import { AccountNumberData } from '../common';
 import { parseAccountNumber } from '../parser';
-import { PIPE, UNDERSCORE } from '../parser/constants';
+import { PIPE, UNDERSCORE, WHITESPACE } from '../parser/constants';
 import { isValidChecksum, ValidationState } from '../validation';
+import { AmbiguousAccountNumberData } from './interfaces';
 
-// TODO might be nice for testing AMB
-export interface AmbiguousAccountNumberData extends AccountNumberData {
-    possibilities: number[][];
-}
+// todo: comments
 
 /**
  * For all ERR or ILL account numbers
@@ -61,13 +59,18 @@ export const reconcileAccountNumber = (
 
     const maybeUnderscore = getAccountNumberPossibiltiesFor(buffer, UNDERSCORE);
     const maybePipe = getAccountNumberPossibiltiesFor(buffer, PIPE);
-    const possibilities = [...maybeUnderscore, ...maybePipe];
+    const maybeWhitespace = getAccountNumberPossibiltiesFor(buffer, WHITESPACE);
+    const possibilities = [
+        ...maybeUnderscore,
+        ...maybePipe,
+        ...maybeWhitespace,
+    ];
 
     switch (possibilities.length) {
         case 0:
             return {
                 ...accountNumber,
-                validationState: ValidationState.ILLEGIBLE,
+                validationState: ValidationState.ERROR,
                 possibilities,
             };
         case 1:
