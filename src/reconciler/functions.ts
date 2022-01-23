@@ -4,19 +4,13 @@ import { PIPE, UNDERSCORE, WHITESPACE } from '../parser/constants';
 import { isValidChecksum, ValidationState } from '../validation';
 import { AmbiguousAccountNumberData } from './interfaces';
 
-// todo: comments
-
 /**
- * For all ERR or ILL account numbers
- * - ADD or REMOVE just one pipe or underscore
- * - Check if is a valid number (parseAccountNumber)
- * - Check if checksum is OK (isValidChecksum)
- * - If both of these conditions, add to AMB array
- * - If AMB.length === 1, use that, report as OK
- * - If AMB.length > 1, report as AMB
- * - If AMB.length === 0, report ILL
+ * Reconciles ILL or ERR account numbers where possible via adding or removing one PIPE or UNDERSCORE.
+ * If no possible valid account numbers exist, set the account number as an ERR.
+ * @param accountNumbers A list of account numbers
+ * @returns {AccountNumberData[]} A list of account numbers that have had an attempt to reconcile them,
+ * i.e. any valid permutation of an ILL or ERR account number
  */
-
 export const reconcileAccountNumbers = (
     accountNumbers: AccountNumberData[],
 ): AccountNumberData[] => {
@@ -89,6 +83,12 @@ export const reconcileAccountNumber = (
     }
 };
 
+/**
+ *
+ * @param accountNumber
+ * @param replacementByte
+ * @returns
+ */
 const getAccountNumberPossibiltiesFor = (
     accountNumber: Buffer,
     replacementByte: number,
@@ -96,6 +96,8 @@ const getAccountNumberPossibiltiesFor = (
     const possibilities = [];
 
     for (let i = 0; i < accountNumber.length; i++) {
+        // We do a deep copy here - this is a naive approach and we could use memoization
+        // or a similar caching strategy if performance were a concern
         const bufferCopy = Buffer.from(accountNumber);
         bufferCopy[i] = replacementByte;
 
