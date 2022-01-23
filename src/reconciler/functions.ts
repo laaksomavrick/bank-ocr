@@ -14,7 +14,6 @@ import { AmbiguousAccountNumberData } from './interfaces';
 export const reconcileAccountNumbers = (
     accountNumbers: AccountNumberData[],
 ): AccountNumberData[] => {
-    console.log(accountNumbers);
     const toReconcile = accountNumbers.filter(
         ({ validationState }) =>
             validationState === ValidationState.ERROR ||
